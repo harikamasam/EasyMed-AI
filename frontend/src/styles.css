@@ -1,0 +1,163 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    min-width: 320px;
+    background:
+      radial-gradient(circle at top left, rgba(15, 159, 154, 0.12), transparent 34rem),
+      linear-gradient(180deg, #f6faf9 0%, #eef8f6 100%);
+    color: #102029;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  button,
+  input,
+  select,
+  textarea {
+    font: inherit;
+  }
+}
+
+@layer components {
+  .page-shell {
+    @apply min-h-screen text-ink;
+  }
+
+  .panel {
+    @apply rounded-lg border border-slate-200/80 bg-white/95 shadow-soft backdrop-blur;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg bg-aqua px-5 py-3 font-semibold text-white shadow-lg shadow-teal-100 transition duration-200 hover:-translate-y-0.5 hover:bg-teal-700 disabled:translate-y-0 disabled:cursor-not-allowed disabled:bg-slate-300 disabled:shadow-none;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg border border-slate-200 bg-white px-5 py-3 font-semibold text-ink transition duration-200 hover:-translate-y-0.5 hover:border-aqua hover:text-aqua disabled:translate-y-0 disabled:cursor-not-allowed disabled:text-slate-400;
+  }
+
+  .field {
+    @apply w-full rounded-lg border border-slate-200 bg-white px-4 py-3 outline-none transition duration-200 placeholder:text-slate-400 focus:border-aqua focus:ring-4 focus:ring-mint;
+  }
+
+  .label {
+    @apply text-sm font-semibold text-slate-700;
+  }
+
+  .surface-hover {
+    @apply transition duration-200 hover:-translate-y-0.5 hover:border-teal-200 hover:shadow-soft;
+  }
+
+  .glass-card {
+    @apply rounded-lg border border-white/70 bg-white/70 shadow-soft backdrop-blur-xl;
+  }
+
+  .premium-card {
+    @apply rounded-lg border border-slate-200/80 bg-white/90 shadow-soft backdrop-blur transition duration-200;
+  }
+
+  .nav-glass {
+    @apply border border-white/70 bg-white/75 shadow-sm backdrop-blur-xl;
+  }
+
+  .premium-noise {
+    background-image:
+      radial-gradient(circle at 1px 1px, rgba(16, 32, 41, 0.045) 1px, transparent 0);
+    background-size: 22px 22px;
+  }
+
+  .ai-badge {
+    @apply inline-flex items-center gap-2 rounded-full border border-teal-200 bg-white/80 px-4 py-2 text-sm font-black text-teal-800 shadow-sm backdrop-blur;
+    animation: badge-pulse 2.6s ease-in-out infinite;
+  }
+}
+
+@layer utilities {
+  .animate-soft-in {
+    animation: soft-in 0.35s ease both;
+  }
+
+  .animate-analysis {
+    animation: analysis-bar 1.4s ease-in-out infinite;
+    width: 42%;
+  }
+
+  .animate-float {
+    animation: float-card 5.4s ease-in-out infinite;
+  }
+
+  .animate-float-slow {
+    animation: float-card 7s ease-in-out infinite;
+  }
+
+  .animate-heartbeat-line {
+    animation: heartbeat-line 2.4s ease-in-out infinite;
+    stroke-dasharray: 420;
+    stroke-dashoffset: 420;
+  }
+
+  @keyframes soft-in {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes analysis-bar {
+    0% {
+      transform: translateX(-110%);
+    }
+    55% {
+      transform: translateX(120%);
+    }
+    100% {
+      transform: translateX(260%);
+    }
+  }
+
+  @keyframes float-card {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+
+  @keyframes badge-pulse {
+    0%, 100% {
+      box-shadow: 0 0 0 0 rgba(15, 159, 154, 0.18);
+    }
+    50% {
+      box-shadow: 0 0 0 8px rgba(15, 159, 154, 0);
+    }
+  }
+
+  @keyframes heartbeat-line {
+    0% {
+      stroke-dashoffset: 420;
+      opacity: 0.45;
+    }
+    45%, 65% {
+      stroke-dashoffset: 0;
+      opacity: 1;
+    }
+    100% {
+      stroke-dashoffset: -420;
+      opacity: 0.45;
+    }
+  }
+}
