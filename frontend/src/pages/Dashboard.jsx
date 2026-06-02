@@ -38,6 +38,11 @@ const fallback = {
     "Your recent cholesterol markers are trending down.",
     "Follow-up recommended for lipid profile within 30 days.",
   ],
+  timeline: [
+    { id: "fallback-current", date: "2026-06-02", type: "Appointment", title: "General physician review", detail: "General Medicine" },
+    { id: "fallback-risk", date: "2026-05-22", type: "Risk change", title: "Medium Risk", detail: "Risk score 44" },
+    { id: "fallback-report", date: "2026-05-08", type: "Report", title: "Blood Panel", detail: "Risk score 47" },
+  ],
 }
 
 export default function Dashboard() {
@@ -234,6 +239,10 @@ export default function Dashboard() {
           )}
         />
       </div>
+
+      <div className="mt-6">
+        <HealthTimeline events={data.timeline || []} />
+      </div>
     </MotionPage>
   )
 }
@@ -378,4 +387,24 @@ function ReminderPreview({ title, icon: Icon, items, empty, render, urgent = fal
 
 function BellIcon(props) {
   return <Activity {...props} />
+}
+
+function HealthTimeline({ events }) {
+  return (
+    <Reveal>
+      <section className="panel p-5">
+        <SectionTitle icon={Activity} title="Health timeline" badge="Chronological" />
+        <div className="mt-5 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+          {events.map((event) => (
+            <article key={event.id} className="relative rounded-lg border border-slate-200 bg-white p-4">
+              <span className="absolute right-4 top-4 rounded-full bg-slate-100 px-3 py-1 text-xs font-black text-slate-600">{event.type}</span>
+              <p className="pr-24 text-sm font-black text-aqua">{event.date}</p>
+              <h3 className="mt-3 font-black">{event.title}</h3>
+              <p className="mt-2 text-sm leading-6 text-slate-600">{event.detail}</p>
+            </article>
+          ))}
+        </div>
+      </section>
+    </Reveal>
+  )
 }

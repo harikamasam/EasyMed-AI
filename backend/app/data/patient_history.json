@@ -1,0 +1,43 @@
+{
+  "symptom_checks": [
+    {
+      "id": "sym-20260508",
+      "date": "2026-05-08",
+      "symptoms": ["fatigue", "headache"],
+      "risk_score": 28,
+      "severity_level": "Low Risk",
+      "specialist": "General Physician"
+    },
+    {
+      "id": "sym-20260522",
+      "date": "2026-05-22",
+      "symptoms": ["fatigue", "excessive thirst"],
+      "risk_score": 44,
+      "severity_level": "Medium Risk",
+      "specialist": "Endocrinologist"
+    }
+  ],
+  "reports": [
+    {
+      "id": "rpt-20260428",
+      "date": "2026-04-28",
+      "report_name": "Lipid Profile",
+      "risk_score": 42,
+      "values": {"Hemoglobin": 13.9, "Glucose": 127, "Cholesterol": 202, "Vitamin D": 21, "WBC Count": 6600}
+    },
+    {
+      "id": "rpt-20260508",
+      "date": "2026-05-08",
+      "report_name": "Blood Panel",
+      "risk_score": 47,
+      "values": {"Hemoglobin": 13.8, "Glucose": 132, "Cholesterol": 208, "Vitamin D": 19, "WBC Count": 6800}
+    }
+  ],
+  "appointments": [
+    {"id": "apt-20260602", "date": "2026-06-02", "title": "General physician review", "specialty": "General Medicine"}
+  ],
+  "reminders": [
+    {"id": "rem-20260603", "date": "2026-06-03", "title": "Upload fasting glucose reading"},
+    {"id": "rem-20260610", "date": "2026-06-10", "title": "Vitamin D follow-up"}
+  ]
+}

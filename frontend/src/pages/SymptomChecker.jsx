@@ -1,4 +1,4 @@
-import { AlertCircle, Loader2, Send, Stethoscope } from "lucide-react"
+import { AlertCircle, Brain, Loader2, Send, Stethoscope } from "lucide-react"
 import { useState } from "react"
 import { api, getApiErrorMessage, isBackendUnavailable } from "../api/client.js"
 import PageHeader from "../components/PageHeader.jsx"
@@ -140,6 +140,18 @@ export default function SymptomChecker() {
                 </div>
               </div>
               <p className={`rounded-lg border border-slate-200 p-4 text-slate-700 ${ruralMode ? "text-lg leading-8" : "leading-7"}`}>{result.recommendation}</p>
+              {!!result.influencing_symptoms?.length && (
+                <EvidencePanel
+                  title="Symptoms that influenced recommendations"
+                  items={result.influencing_symptoms}
+                />
+              )}
+              {result.ai_reasoning_card && (
+                <ReasoningCard card={result.ai_reasoning_card} />
+              )}
+              {!!result.trend_changes?.length && (
+                <EvidencePanel title="History comparison" items={result.trend_changes} />
+              )}
               <div className="flex gap-3 rounded-lg bg-amber-50 p-4 text-amber-900">
                 <AlertCircle className="mt-0.5 shrink-0" size={20} />
                 <p className="text-sm leading-6">{result.disclaimer}</p>
@@ -152,5 +164,46 @@ export default function SymptomChecker() {
         </section>
       </div>
     </>
+  )
+}
+
+function EvidencePanel({ title, items }) {
+  return (
+    <section className="rounded-lg border border-slate-200 bg-slate-50 p-4">
+      <h3 className="font-bold">{title}</h3>
+      <div className="mt-3 flex flex-wrap gap-2">
+        {items.map((item) => (
+          <span key={item} className="rounded-full bg-white px-3 py-1 text-sm font-bold text-slate-700 shadow-sm">{item}</span>
+        ))}
+      </div>
+    </section>
+  )
+}
+
+function ReasoningCard({ card }) {
+  const rows = [
+    ["Inputs considered", card.inputs_considered],
+    ["Key findings", card.key_findings],
+    ["Risk factors", card.risk_factors],
+    ["Recommended specialist", [card.recommended_specialist]],
+    ["Next action", [card.next_recommended_action]],
+  ]
+
+  return (
+    <section className="rounded-lg border border-teal-200 bg-mint/60 p-4">
+      <div className="flex items-center gap-2">
+        <Brain className="text-teal-800" size={20} />
+        <h3 className="font-black">AI reasoning card</h3>
+        <span className="ml-auto rounded-full bg-white px-3 py-1 text-xs font-black text-teal-800">{card.confidence_score}% confidence</span>
+      </div>
+      <div className="mt-4 space-y-3">
+        {rows.map(([label, values]) => (
+          <div key={label}>
+            <p className="text-xs font-black uppercase tracking-[0.14em] text-slate-500">{label}</p>
+            <p className="mt-1 text-sm font-semibold leading-6 text-slate-700">{Array.isArray(values) ? values.join(", ") : values}</p>
+          </div>
+        ))}
+      </div>
+    </section>
   )
 }

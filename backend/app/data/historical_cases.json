@@ -1,0 +1,30 @@
+[
+  {
+    "id": "case-101",
+    "label": "Glucose and cholesterol elevation",
+    "findings": {"Glucose": 148, "Cholesterol": 228, "Vitamin D": 22, "Hemoglobin": 14.1, "WBC Count": 7200},
+    "matching_findings": ["High glucose", "High cholesterol", "Low vitamin D"],
+    "outcome": "Doctor advised fasting repeat test and lifestyle review."
+  },
+  {
+    "id": "case-102",
+    "label": "Vitamin D deficiency with stable blood count",
+    "findings": {"Glucose": 92, "Cholesterol": 184, "Vitamin D": 16, "Hemoglobin": 13.6, "WBC Count": 6400},
+    "matching_findings": ["Low vitamin D", "Normal hemoglobin", "Normal WBC"],
+    "outcome": "Supplementation discussion recommended."
+  },
+  {
+    "id": "case-103",
+    "label": "Anemia-like blood panel",
+    "findings": {"Glucose": 88, "Cholesterol": 172, "Vitamin D": 31, "Hemoglobin": 9.8, "WBC Count": 6900},
+    "matching_findings": ["Low hemoglobin", "Normal WBC"],
+    "outcome": "Iron studies and physician review recommended."
+  },
+  {
+    "id": "case-104",
+    "label": "Inflammation signal",
+    "findings": {"Glucose": 104, "Cholesterol": 190, "Vitamin D": 28, "Hemoglobin": 13.2, "WBC Count": 13400},
+    "matching_findings": ["High WBC", "Borderline glucose"],
+    "outcome": "Infection assessment recommended."
+  }
+]

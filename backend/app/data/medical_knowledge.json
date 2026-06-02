@@ -1,0 +1,50 @@
+[
+  {
+    "condition": "Possible acute coronary syndrome",
+    "specialist": "Cardiologist or Emergency Physician",
+    "severity": "Emergency",
+    "symptoms": ["chest pain", "shortness of breath", "sweating", "left arm pain", "nausea"],
+    "risk_factors": ["high blood pressure", "high cholesterol", "diabetes"],
+    "explanation": "Chest pain with breathlessness, sweating, or abnormal cardiovascular markers can indicate urgent cardiac risk."
+  },
+  {
+    "condition": "Respiratory infection",
+    "specialist": "General Physician or Pulmonologist",
+    "severity": "Medium Risk",
+    "symptoms": ["fever", "cough", "sore throat", "shortness of breath", "fatigue"],
+    "risk_factors": ["high wbc", "low oxygen"],
+    "explanation": "Fever, cough, sore throat, and high WBC can point toward infection or inflammation."
+  },
+  {
+    "condition": "Impaired glucose control",
+    "specialist": "Endocrinologist",
+    "severity": "Medium Risk",
+    "symptoms": ["fatigue", "frequent urination", "excessive thirst", "blurred vision"],
+    "risk_factors": ["high glucose", "family history of diabetes"],
+    "explanation": "High glucose combined with thirst, urination changes, fatigue, or vision symptoms increases metabolic risk."
+  },
+  {
+    "condition": "Vitamin D deficiency",
+    "specialist": "General Physician",
+    "severity": "Low Risk",
+    "symptoms": ["fatigue", "bone pain", "muscle weakness", "low mood"],
+    "risk_factors": ["low vitamin d"],
+    "explanation": "Low vitamin D can contribute to fatigue, muscle weakness, and bone health concerns."
+  },
+  {
+    "condition": "Anemia pattern",
+    "specialist": "General Physician or Hematologist",
+    "severity": "Medium Risk",
+    "symptoms": ["fatigue", "dizziness", "shortness of breath", "pale skin"],
+    "risk_factors": ["low hemoglobin"],
+    "explanation": "Low hemoglobin with fatigue, dizziness, or breathlessness can suggest anemia that needs clinical review."
+  },
+  {
+    "condition": "Cardiometabolic risk",
+    "specialist": "Cardiologist or Endocrinologist",
+    "severity": "High Risk",
+    "symptoms": ["fatigue", "headache", "chest pain"],
+    "risk_factors": ["high cholesterol", "high glucose", "high blood pressure"],
+    "explanation": "High cholesterol, glucose, or blood pressure together increase long-term heart and metabolic risk."
+  }
+]

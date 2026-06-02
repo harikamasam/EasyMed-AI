@@ -1,5 +1,7 @@
 from fastapi import APIRouter
 
+from app.services.timeline_engine import build_timeline
+
 router = APIRouter()
 
 
@@ -25,4 +27,5 @@ async def get_dashboard() -> dict:
             "Hydration reminder triggered by elevated BUN marker.",
             "Follow-up recommended for lipid profile within 30 days.",
         ],
+        "timeline": build_timeline(),
     }

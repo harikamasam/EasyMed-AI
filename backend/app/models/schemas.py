@@ -108,6 +108,18 @@ class SymptomResponse(BaseModel):
     urgency: Literal["low", "medium", "high"]
     recommendation: str
     disclaimer: str
+    recommended_specialist: str = "General Physician"
+    risk_score: int = 0
+    confidence_score: int = 0
+    severity_level: str = "Low Risk"
+    explanation: list[str] = Field(default_factory=list)
+    influencing_symptoms: list[str] = Field(default_factory=list)
+    retrieved_knowledge: list[dict] = Field(default_factory=list)
+    risk_factors: list[str] = Field(default_factory=list)
+    trend_changes: list[str] = Field(default_factory=list)
+    timeline_events: list[dict] = Field(default_factory=list)
+    ai_reasoning_card: dict = Field(default_factory=dict)
+    validation_warnings: list[str] = Field(default_factory=list)
 
 
 class ReportValueInput(BaseModel):
@@ -125,6 +137,8 @@ class EmergencyRiskRequest(BaseModel):
 
 class EmergencyRiskResponse(BaseModel):
     severity_level: Literal["Low Risk", "Medium Risk", "High Risk", "Emergency"]
+    risk_score: int = 0
+    confidence_score: int = 0
     suggested_action: str
     lifestyle_suggestion: str
     doctor_visit_priority: Literal["Low", "Medium", "High", "Emergency"]
@@ -133,6 +147,10 @@ class EmergencyRiskResponse(BaseModel):
     simple_explanation: str
     explain_like_10: str
     rural_summary: str
+    explanation: list[str] = Field(default_factory=list)
+    risk_factors: list[str] = Field(default_factory=list)
+    inputs_considered: list[str] = Field(default_factory=list)
+    validation_warnings: list[str] = Field(default_factory=list)
     language_key: str = "en"
     disclaimer: str = "AI insights are informational only and not a substitute for professional medical advice."
 
@@ -160,3 +178,14 @@ class ReportSummaryResponse(BaseModel):
     doctor_visit_priority: Literal["Low", "Medium", "High"] = "Medium"
     patient_friendly_explanation: str = "AI insights are for informational purposes only. Please consult a licensed doctor."
     disclaimer: str = "AI insights are for informational purposes only. Please consult a licensed doctor."
+    risk_score: int = 0
+    confidence_score: int = 0
+    severity_level: str = "Low Risk"
+    explanation: list[str] = Field(default_factory=list)
+    risk_factors: list[str] = Field(default_factory=list)
+    structured_fields: list[ReportMetric] = Field(default_factory=list)
+    similar_cases: list[dict] = Field(default_factory=list)
+    trend_changes: list[str] = Field(default_factory=list)
+    timeline_events: list[dict] = Field(default_factory=list)
+    ai_reasoning_card: dict = Field(default_factory=dict)
+    validation_warnings: list[str] = Field(default_factory=list)

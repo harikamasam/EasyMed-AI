@@ -93,6 +93,32 @@ const mockAnalysis = {
     "Confirm whether the glucose sample was fasting or random.",
     "Ask whether vitamin D supplementation or repeat testing is appropriate.",
   ],
+  risk_score: 66,
+  confidence_score: 74,
+  severity_level: "High Risk",
+  explanation: ["High Glucose increased risk score.", "High Cholesterol increased risk score.", "Low Vitamin D increased risk score."],
+  risk_factors: ["High Glucose", "High Cholesterol", "Low Vitamin D"],
+  structured_fields: [],
+  similar_cases: [
+    {
+      id: "case-demo",
+      label: "Glucose and cholesterol elevation",
+      similarity_percentage: 91,
+      matching_findings: ["High glucose", "High cholesterol", "Low vitamin D"],
+      outcome: "Doctor advised fasting repeat test and lifestyle review.",
+    },
+  ],
+  trend_changes: ["Glucose increased 8% compared to last report.", "Cholesterol increased 3% compared to last report."],
+  timeline_events: [],
+  ai_reasoning_card: {
+    inputs_considered: ["Hemoglobin", "Glucose", "Cholesterol", "Vitamin D", "WBC Count"],
+    key_findings: ["Glucose is high.", "Cholesterol is high.", "Vitamin D is low."],
+    risk_factors: ["High Glucose", "High Cholesterol", "Low Vitamin D"],
+    confidence_score: 74,
+    recommended_specialist: "General Physician or Endocrinologist",
+    next_recommended_action: "Book a doctor review soon.",
+  },
+  validation_warnings: ["Backend unavailable; demo parser confidence is limited."],
   generated_at: new Date().toISOString(),
   disclaimer: "AI insights are for informational purposes only. Please consult a licensed doctor.",
 }
@@ -328,6 +354,12 @@ function normalizeAnalysis(raw, fileName) {
     normal_values: raw.normal_values || mockAnalysis.normal_values,
     possible_health_insights: raw.possible_health_insights || mockAnalysis.possible_health_insights,
     next_steps: raw.next_steps || mockAnalysis.next_steps,
+    structured_fields: raw.structured_fields?.length ? raw.structured_fields : [...(raw.abnormal_values || mockAnalysis.abnormal_values), ...(raw.normal_values || mockAnalysis.normal_values)],
+    similar_cases: raw.similar_cases || mockAnalysis.similar_cases,
+    trend_changes: raw.trend_changes || mockAnalysis.trend_changes,
+    timeline_events: raw.timeline_events || mockAnalysis.timeline_events,
+    ai_reasoning_card: raw.ai_reasoning_card || mockAnalysis.ai_reasoning_card,
+    validation_warnings: raw.validation_warnings || mockAnalysis.validation_warnings,
     disclaimer: raw.disclaimer || mockAnalysis.disclaimer,
   }
 }
@@ -368,6 +400,8 @@ function AnalysisResult({ analysis, risk, ruralMode, explainSimple, onDownload }
       <MetricSection title="Abnormal Values" description="Values outside the sample reference range." values={analysis.abnormal_values} />
       <MetricSection title="Normal Values" description="Values currently shown within the sample reference range." values={analysis.normal_values} />
 
+      <StructuredIntelligenceGrid analysis={analysis} />
+
       <section className="panel p-6">
         <h3 className="text-xl font-black">Patient-Friendly Medical Explanations</h3>
         <p className="mt-2 text-sm text-slate-500">Plain-language, multilingual-ready explanation blocks for common report terms.</p>
@@ -403,6 +437,102 @@ function AnalysisResult({ analysis, risk, ruralMode, explainSimple, onDownload }
         </section>
       </div>
     </div>
+  )
+}
+
+function StructuredIntelligenceGrid({ analysis }) {
+  return (
+    <div className="grid gap-6 lg:grid-cols-2">
+      <ReasoningCard card={analysis.ai_reasoning_card} />
+      <TimelinePanel events={analysis.timeline_events} />
+      <SimilarityPanel cases={analysis.similar_cases} />
+      <TrendPanel trends={analysis.trend_changes} warnings={analysis.validation_warnings} />
+    </div>
+  )
+}
+
+function ReasoningCard({ card = {} }) {
+  const rows = [
+    ["Inputs considered", card.inputs_considered],
+    ["Key findings", card.key_findings],
+    ["Risk factors", card.risk_factors],
+    ["Recommended specialist", [card.recommended_specialist]],
+    ["Next action", [card.next_recommended_action]],
+  ]
+
+  return (
+    <section className="panel p-6">
+      <div className="flex items-center gap-3">
+        <span className="grid h-11 w-11 place-items-center rounded-lg bg-mint text-teal-800">
+          <Brain size={22} />
+        </span>
+        <div>
+          <h3 className="text-xl font-black">AI reasoning card</h3>
+          <p className="text-sm text-slate-500">{card.confidence_score || 0}% confidence</p>
+        </div>
+      </div>
+      <div className="mt-5 space-y-4">
+        {rows.map(([label, values]) => (
+          <div key={label}>
+            <p className="text-xs font-black uppercase tracking-[0.16em] text-slate-500">{label}</p>
+            <p className="mt-1 text-sm font-semibold leading-6 text-slate-700">{(values || []).filter(Boolean).join(", ") || "Not available"}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+  )
+}
+
+function SimilarityPanel({ cases = [] }) {
+  return (
+    <section className="panel p-6">
+      <h3 className="text-xl font-black">Similar historical cases</h3>
+      <div className="mt-5 space-y-3">
+        {cases.map((item) => (
+          <article key={item.id} className="rounded-lg border border-slate-200 bg-slate-50 p-4">
+            <div className="flex items-start justify-between gap-3">
+              <p className="font-black">{item.label}</p>
+              <span className="rounded-full bg-white px-3 py-1 text-xs font-black text-teal-800">{item.similarity_percentage}%</span>
+            </div>
+            <p className="mt-3 text-sm font-semibold leading-6 text-slate-600">{item.matching_findings.join(", ")}</p>
+            <p className="mt-2 text-sm leading-6 text-slate-500">{item.outcome}</p>
+          </article>
+        ))}
+      </div>
+    </section>
+  )
+}
+
+function TrendPanel({ trends = [], warnings = [] }) {
+  return (
+    <section className="panel p-6">
+      <h3 className="text-xl font-black">History trends and validation</h3>
+      <div className="mt-5 space-y-3">
+        {[...trends, ...warnings].map((item) => (
+          <div key={item} className="rounded-lg border border-slate-200 bg-slate-50 p-4 text-sm font-semibold leading-6 text-slate-700">
+            {item}
+          </div>
+        ))}
+      </div>
+    </section>
+  )
+}
+
+function TimelinePanel({ events = [] }) {
+  return (
+    <section className="panel p-6">
+      <h3 className="text-xl font-black">Health timeline</h3>
+      <div className="mt-5 space-y-4">
+        {events.slice(0, 5).map((event) => (
+          <div key={event.id} className="relative border-l-2 border-teal-200 pl-4">
+            <span className="absolute -left-[7px] top-1.5 h-3 w-3 rounded-full bg-aqua" />
+            <p className="text-xs font-black uppercase tracking-[0.14em] text-slate-500">{event.date} - {event.type}</p>
+            <p className="mt-1 font-black">{event.title}</p>
+            <p className="mt-1 text-sm text-slate-600">{event.detail}</p>
+          </div>
+        ))}
+      </div>
+    </section>
   )
 }
 

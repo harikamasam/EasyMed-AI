@@ -1,4 +1,4 @@
-import { AlertTriangle, HeartPulse, Languages, Mic, ShieldAlert, Sparkles, Stethoscope } from "lucide-react"
+import { AlertTriangle, Gauge, HeartPulse, Languages, Mic, ShieldAlert, Sparkles, Stethoscope } from "lucide-react"
 
 const riskClasses = {
   "Low Risk": "border-emerald-200 bg-emerald-50 text-emerald-900",
@@ -16,6 +16,8 @@ const priorityClasses = {
 
 export const emergencyRiskFallback = {
   severity_level: "Medium Risk",
+  risk_score: 48,
+  confidence_score: 62,
   suggested_action: "Schedule a doctor visit soon and carry your report or symptom notes.",
   lifestyle_suggestion: "Rest, hydrate, avoid self-medication, and track symptoms clearly.",
   doctor_visit_priority: "Medium",
@@ -24,6 +26,9 @@ export const emergencyRiskFallback = {
   simple_explanation: "EasyMed checks symptoms and abnormal values to estimate how quickly a doctor should review them.",
   explain_like_10: "Your body is giving signals. If the signals look stronger, EasyMed tells you to get help faster.",
   rural_summary: "If a clinic is far away, call a local health worker first. Travel urgently for chest pain, breathing trouble, fainting, confusion, or severe weakness.",
+  explanation: ["Fallback risk uses symptom count and abnormal report value status."],
+  risk_factors: ["Limited demo inputs"],
+  validation_warnings: ["Backend unavailable; confidence is limited."],
   language_key: "en",
   disclaimer: "AI insights are informational only and not a substitute for professional medical advice.",
 }
@@ -48,11 +53,33 @@ export default function RiskEngineCard({ risk = emergencyRiskFallback, ruralMode
         </div>
 
         <div className="mt-5 grid gap-4 md:grid-cols-2">
+          <RiskItem icon={Gauge} label="Risk Score" value={`${risk.risk_score ?? 0}/100`} ruralMode={ruralMode} />
+          <RiskItem icon={ShieldAlert} label="Confidence" value={`${risk.confidence_score ?? 0}%`} ruralMode={ruralMode} />
           <RiskItem icon={HeartPulse} label="Suggested Action" value={risk.suggested_action} ruralMode={ruralMode} />
           <RiskItem icon={Stethoscope} label="Suggested Specialist" value={risk.suggested_specialist} ruralMode={ruralMode} />
           <RiskItem icon={Sparkles} label="Lifestyle Suggestion" value={risk.lifestyle_suggestion} ruralMode={ruralMode} />
           <RiskItem icon={AlertTriangle} label="Emergency Recommendation" value={risk.emergency_recommendation} ruralMode={ruralMode} />
         </div>
+
+        {!!risk.explanation?.length && (
+          <div className="mt-5 rounded-lg border border-current/20 bg-white/75 p-4">
+            <p className="font-black">Risk explanation</p>
+            <ul className="mt-3 space-y-2">
+              {risk.explanation.map((item) => (
+                <li key={item} className={`${ruralMode ? "text-lg leading-8" : "text-sm leading-6"} font-semibold`}>{item}</li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        {!!risk.validation_warnings?.length && (
+          <div className="mt-4 rounded-lg border border-amber-300 bg-amber-50 p-4 text-amber-950">
+            <p className="font-black">Validation warnings</p>
+            <ul className="mt-2 space-y-1 text-sm font-semibold leading-6">
+              {risk.validation_warnings.map((warning) => <li key={warning}>{warning}</li>)}
+            </ul>
+          </div>
+        )}
 
         <div className="mt-5 rounded-lg border border-current/20 bg-white/70 p-4">
           <p className="font-black">{explainSimple ? "Explain Like I am 10" : "Patient-friendly medical explanation"}</p>
